@@ -127,4 +127,53 @@
 
     Isto é permitido por estarmos trabalhando com webpack que vai conseguir agrupar tudo isto no bundle.js
 
+21) Criar uma pasta chamada "public"
+    Ficarão arquivos que não precisam ser monitorados pelo webpack. (index.html). Bundle.js pode ser excluído que iremos recriar na public.
 
+22) Criar uma pasta chamada "src"
+    Pasta src irá conter todo o código js de nossa aplicação.
+    Mover tudo para lá e ajustar possíveis apontamentos de arquivos.
+
+23) ajustar o webpack.config.js da seguinte forma, para considerar os novos caminhos:
+        module.exports = {
+            entry: './src/main.js',
+            output: {
+                path: __dirname+'/public',
+                filename: 'bundle.js'
+            },
+            devServer: {
+                contentBase: __dirname + '/public'
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.js$/,
+                        exclude: /node_modules/,
+                        use: {
+                            loader: 'babel-loader'
+                        }
+                    }
+                ]
+            }
+        };
+
+24) Instalar webpack-dev-server no terminal
+        yarn add webpack-dev-server -D
+
+25) Alterar a seguinte linha abaixo pela segunda no package.json
+
+        //Antiga
+        "dev": "webpack --mode=development -w"
+        //nova
+        "dev": "webpack-dev-server --mode=development",
+        "build": "webpack --mode=production"
+
+26) com o que foi realizado acima, é possível levantar o server para acesso e também rodar a build para quando formos jogar esta aplicação em produção real
+
+27) rodar "yarn dev" para subir o server
+    ** O dev server irá monitorar todas as mudanças nos arquivos e irá ajusta-las automaticamente para acesso ao servidor, sem necessidade de algum comando
+
+28) procurar a linha "i ｢wds｣: Project is running at http://localhost:8081/". A mesma demonstra o end do server
+29) Acessar http://localhost:8081/
+
+30) Para criar o bundle.js quando for utilizar em produção, código: "yarn build"
