@@ -1,0 +1,179 @@
+1) Pré-requisitos:
+    a) NodeJS. 
+        Para ver se está instalado, utilizar "node -v" no terminal
+    b) Yarn
+        Irá possibilitar instalar pacotes de outros fornecedores.
+        Para ver se instalou utilizar "yarn -v"
+
+2) No terminal, dentro da pasta do projeto, executar o seguinte comando:
+    "yarn init"
+
+    Isto irá criar um arquivo "package.json" com as 
+    relações de dependências da aplicação
+
+3) Instalar o Babel. No terminal:
+    "yarn add @babel/cli"
+
+    Permitirá utilizar a interface de linha de comando do babel
+
+4) Instalar outra ferramenta do Babel
+    "yarn add @babel/preset-env"
+    "yarn add @babel/core"
+
+    Irá criar um arquivo "yarn.lock" que nunca precisaremos mecher. 
+    É só uma forma de chache do Yarn.
+
+    Criou uma pasta node_modules com vários arquivos de dependências. 
+    Também não precisaremos mecher 
+
+5) Se for utilizar o Git para controle de versão, esta é uma boa hora para criar o arquivo:
+    .gitignore
+
+    Colocar uma linha "node_modules/" para ele não controlar o envio desta pasta para o online no GIT.
+
+6) Criar um arquivo na raiz do projeto:
+    ".babelrc"
+
+    O cara que irá transformar nossas features com o ES6 de uma forma que todos 
+    os navegadores entendam. O ES6 e posteriores, contemplam muitas funcionalidads para Javascript
+    que os navegadores ainda não entendem, e o babel irá converter para linguagem correta.
+
+7) dentro do arquivo colocar o código abaixo para que o mesmo se encarregue de converter o código
+    {
+        "presets": ["@babel/preset-env"]
+    }
+
+8) Criar um arquivo main.js e index.html
+
+9) Inserir os scripts abaixo dentro do código do arquivo package.json após o "}" das dependencies
+    ,
+    "scripts": {
+        "dev": "babel ./main.js -o ./bundle.js -w"
+    }
+
+10) Executar comando no terminal:
+    "yarn dev"
+
+    Irá criar o arquivo .bundle.js conforme definimos anteriormente.
+    Irá migrar todo o código convertido para linguagem compreensível dos navegadores ao mesmo.
+    Se deixar o código yarn dev rodando em um terminal cmd, ele fará as alterações no bundle.js
+    sempre que salvar os arquivos, sem necessidade de rodar novamente o comando para conversão.
+
+11) Instalar mais um plugin ao babel para rodar Operadores Rest e Spread. Rodar no terminal.
+    yarn add @babel/plugin-proposal-object-rest-spread
+
+12) dentro do arquivo babelrc, adicionar a seguinte linha abaixo de presets:
+    ,
+    "plugins" : ["@babel/plugin-proposal-object-rest-spread"]
+
+13) Para que possamos tratar as dependências somente a nível de desenvolvimento, sem que sejam levadas para a 
+    aplicação final, substituir a linha abaixo pela segunda dentro do package.json
+        "dependencies": {
+        "devDependencies": {
+
+14) rodar o comando  "yarn add webpack webpack-cli" no terminal para instalar o webpack 
+    ** O Webpack ele junta os arquivos JS (e também outros formatos) da sua 
+    aplicação (seja arquivos seus ou dependências externas) em um arquivo só (ou mais de um), 
+    de forma otimizada
+
+    yarn add webpack webpack-cli
+
+15) Criar arquivo de configuração do webpack
+    webpack.config.js
+
+16) incluir as seguintes linhas no arquivo:
+    module.exports = {
+        entry: './main.js',
+        output: {
+            path: __dirname,
+            filename: 'bundle.js'
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader'
+                    }
+                }
+            ]
+        }
+    };
+
+17) Rodar o comando "yarn add babel-loader -D" no terminal para instalar o babel-loader
+    ou 
+    Rodar o comando "yarn add babel-loader@8.0.0-beta.0 -D" no terminal para instalar o babel-loader
+
+18) substituir o código abaixo pelo segundo dentro de package.json
+        //ANTIGO
+
+        "scripts": {
+            "dev": "babel ./main.js -o ./bundle.js -w"
+        },
+
+        //NOVO
+
+        "scripts": {
+            "dev": "webpack --mode=development -w"
+        },
+
+19) Rodar o comando "yarn dev" no terminal para que seja convertido para o bundle.js
+
+20) Criar um arquivo funcoes.js e após, na main.js importar este arquivo e executar as funções, 
+    como se fosse um include do PHP
+
+    import {soma} from './funcoes';
+
+    Isto é permitido por estarmos trabalhando com webpack que vai conseguir agrupar tudo isto no bundle.js
+
+21) Criar uma pasta chamada "public"
+    Ficarão arquivos que não precisam ser monitorados pelo webpack. (index.html). Bundle.js pode ser excluído que iremos recriar na public.
+
+22) Criar uma pasta chamada "src"
+    Pasta src irá conter todo o código js de nossa aplicação.
+    Mover tudo para lá e ajustar possíveis apontamentos de arquivos.
+
+23) ajustar o webpack.config.js da seguinte forma, para considerar os novos caminhos:
+        module.exports = {
+            entry: './src/main.js',
+            output: {
+                path: __dirname+'/public',
+                filename: 'bundle.js'
+            },
+            devServer: {
+                contentBase: __dirname + '/public'
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.js$/,
+                        exclude: /node_modules/,
+                        use: {
+                            loader: 'babel-loader'
+                        }
+                    }
+                ]
+            }
+        };
+
+24) Instalar webpack-dev-server no terminal
+        yarn add webpack-dev-server -D
+
+25) Alterar a seguinte linha abaixo pela segunda no package.json
+
+        //Antiga
+        "dev": "webpack --mode=development -w"
+        //nova
+        "dev": "webpack-dev-server --mode=development",
+        "build": "webpack --mode=production"
+
+26) com o que foi realizado acima, é possível levantar o server para acesso e também rodar a build para quando formos jogar esta aplicação em produção real
+
+27) rodar "yarn dev" para subir o server
+    ** O dev server irá monitorar todas as mudanças nos arquivos e irá ajusta-las automaticamente para acesso ao servidor, sem necessidade de algum comando
+
+28) procurar a linha "i ｢wds｣: Project is running at http://localhost:8081/". A mesma demonstra o end do server
+29) Acessar http://localhost:8081/
+
+30) Para criar o bundle.js quando for utilizar em produção, código: "yarn build"
