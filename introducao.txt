@@ -66,4 +66,65 @@
     ,
     "plugins" : ["@babel/plugin-proposal-object-rest-spread"]
 
+13) Para que possamos tratar as dependências somente a nível de desenvolvimento, sem que sejam levadas para a 
+    aplicação final, substituir a linha abaixo pela segunda dentro do package.json
+        "dependencies": {
+        "devDependencies": {
+
+14) rodar o comando  "yarn add webpack webpack-cli" no terminal para instalar o webpack 
+    ** O Webpack ele junta os arquivos JS (e também outros formatos) da sua 
+    aplicação (seja arquivos seus ou dependências externas) em um arquivo só (ou mais de um), 
+    de forma otimizada
+
+    yarn add webpack webpack-cli
+
+15) Criar arquivo de configuração do webpack
+    webpack.config.js
+
+16) incluir as seguintes linhas no arquivo:
+    module.exports = {
+        entry: './main.js',
+        output: {
+            path: __dirname,
+            filename: 'bundle.js'
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader'
+                    }
+                }
+            ]
+        }
+    };
+
+17) Rodar o comando "yarn add babel-loader -D" no terminal para instalar o babel-loader
+    ou 
+    Rodar o comando "yarn add babel-loader@8.0.0-beta.0 -D" no terminal para instalar o babel-loader
+
+18) substituir o código abaixo pelo segundo dentro de package.json
+        //ANTIGO
+
+        "scripts": {
+            "dev": "babel ./main.js -o ./bundle.js -w"
+        },
+
+        //NOVO
+
+        "scripts": {
+            "dev": "webpack --mode=development -w"
+        },
+
+19) Rodar o comando "yarn dev" no terminal para que seja convertido para o bundle.js
+
+20) Criar um arquivo funcoes.js e após, na main.js importar este arquivo e executar as funções, 
+    como se fosse um include do PHP
+
+    import {soma} from './funcoes';
+
+    Isto é permitido por estarmos trabalhando com webpack que vai conseguir agrupar tudo isto no bundle.js
+
 
