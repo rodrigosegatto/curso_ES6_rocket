@@ -1,0 +1,69 @@
+1) Pré-requisitos:
+    a) NodeJS. 
+        Para ver se está instalado, utilizar "node -v" no terminal
+    b) Yarn
+        Irá possibilitar instalar pacotes de outros fornecedores.
+        Para ver se instalou utilizar "yarn -v"
+
+2) No terminal, dentro da pasta do projeto, executar o seguinte comando:
+    "yarn init"
+
+    Isto irá criar um arquivo "package.json" com as 
+    relações de dependências da aplicação
+
+3) Instalar o Babel. No terminal:
+    "yarn add @babel/cli"
+
+    Permitirá utilizar a interface de linha de comando do babel
+
+4) Instalar outra ferramenta do Babel
+    "yarn add @babel/preset-env"
+    "yarn add @babel/core"
+
+    Irá criar um arquivo "yarn.lock" que nunca precisaremos mecher. 
+    É só uma forma de chache do Yarn.
+
+    Criou uma pasta node_modules com vários arquivos de dependências. 
+    Também não precisaremos mecher 
+
+5) Se for utilizar o Git para controle de versão, esta é uma boa hora para criar o arquivo:
+    .gitignore
+
+    Colocar uma linha "node_modules/" para ele não controlar o envio desta pasta para o online no GIT.
+
+6) Criar um arquivo na raiz do projeto:
+    ".babelrc"
+
+    O cara que irá transformar nossas features com o ES6 de uma forma que todos 
+    os navegadores entendam. O ES6 e posteriores, contemplam muitas funcionalidads para Javascript
+    que os navegadores ainda não entendem, e o babel irá converter para linguagem correta.
+
+7) dentro do arquivo colocar o código abaixo para que o mesmo se encarregue de converter o código
+    {
+        "presets": ["@babel/preset-env"]
+    }
+
+8) Criar um arquivo main.js e index.html
+
+9) Inserir os scripts abaixo dentro do código do arquivo package.json após o "}" das dependencies
+    ,
+    "scripts": {
+        "dev": "babel ./main.js -o ./bundle.js -w"
+    }
+
+10) Executar comando no terminal:
+    "yarn dev"
+
+    Irá criar o arquivo .bundle.js conforme definimos anteriormente.
+    Irá migrar todo o código convertido para linguagem compreensível dos navegadores ao mesmo.
+    Se deixar o código yarn dev rodando em um terminal cmd, ele fará as alterações no bundle.js
+    sempre que salvar os arquivos, sem necessidade de rodar novamente o comando para conversão.
+
+11) Instalar mais um plugin ao babel para rodar Operadores Rest e Spread. Rodar no terminal.
+    yarn add @babel/plugin-proposal-object-rest-spread
+
+12) dentro do arquivo babelrc, adicionar a seguinte linha abaixo de presets:
+    ,
+    "plugins" : ["@babel/plugin-proposal-object-rest-spread"]
+
+
