@@ -59,6 +59,11 @@
     Se deixar o código yarn dev rodando em um terminal cmd, ele fará as alterações no bundle.js
     sempre que salvar os arquivos, sem necessidade de rodar novamente o comando para conversão.
 
+11) Instalar mais um plugin ao babel para rodar Operadores Rest e Spread. Rodar no terminal.
+    yarn add @babel/plugin-proposal-object-rest-spread
 
+12) dentro do arquivo babelrc, adicionar a seguinte linha abaixo de presets:
+    ,
+    "plugins" : ["@babel/plugin-proposal-object-rest-spread"]
 
 
