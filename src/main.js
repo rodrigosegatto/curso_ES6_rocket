@@ -12,4 +12,6 @@
 //console.log(somaFunction(1,2));
 //console.log(sub(5,4));
 
-alert('testando');
+import ClasseUsuario from './funcoes';
+
+ClasseUsuario.info();
