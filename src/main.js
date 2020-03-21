@@ -2,6 +2,7 @@ class App {
     constructor (){
         this.repositories = [];
         this.formElement = document.getElementById('repo-form');
+        this.listElement = document.getElementById('repo-list');
         this.registerHandlers();
     }
 
@@ -19,7 +20,34 @@ class App {
             html_url: 'http://github.com/rocketseat/rocketseat.com.br'
         });
 
-        console.log(this.repositories);
+        this.render();
+    }
+
+    render(){
+        this.listElement.innerHTML = '';
+        this.repositories.forEach(repo => {
+            let imgElement = document.createElement('img');
+            imgElement.setAttribute('src',repo.avatar_url);
+
+            let titleElement = document.createElement('strong');
+            titleElement.appendChild(document.createTextNode(repo.name));
+
+            let descriptionElement = document.createElement('p');
+            descriptionElement.appendChild(document.createTextNode(repo.description));
+
+            let linkElement = document.createElement('a');
+            linkElement.setAttribute('target','_blank');
+            linkElement.appendChild(document.createTextNode('Acessar'));
+
+            let listItemElement = document.createElement('li');
+            listItemElement.appendChild(imgElement);
+            listItemElement.appendChild(titleElement);
+            listItemElement.appendChild(descriptionElement);
+            listItemElement.appendChild(linkElement);
+
+            this.listElement.appendChild(listItemElement);
+
+        });
     }
 }
 
