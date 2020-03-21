@@ -1,10 +1,7 @@
-import api from './api';
-
 class App {
     constructor (){
         this.repositories = [];
         this.formElement = document.getElementById('repo-form');
-        this.inputElement = document.querySelector('input[name=repository]');
         this.listElement = document.getElementById('repo-list');
         this.registerHandlers();
     }
@@ -13,31 +10,15 @@ class App {
         this.formElement.onsubmit = event => this.addRepository(event); 
     }
 
-    async addRepository(event){
+    addRepository(event){
         event.preventDefault();
 
-        const repoInput = this.inputElement.value;
-
-        if(repoInput.length === 0)
-            return;
-
-        try{
-            const response = await api.get(`/repos/${repoInput}`);
-        }catch (err){
-            console.warn('Erro na API');
-        }
-        //Utilizando desestruturação para obter valores de retorno
-        const { name, description, html_url, owner: {avatar_url}} = response.data;
-        
-        //Mais uma melhoria por não precisar utilizar a sintax name: name, pois são iguais
         this.repositories.push({
-            name,
-            description,
-            avatar_url,
-            html_url
+            name: 'rocketseat.com.br',
+            description: 'Tire sua ideia do papel e de vida a sua startup',
+            avatar_url: 'https://avatars0.githubusercontent.com/u/28929274?v=4',
+            html_url: 'http://github.com/rocketseat/rocketseat.com.br'
         });
-
-        this.inputElement.value = '';
 
         this.render();
     }
@@ -56,7 +37,6 @@ class App {
 
             let linkElement = document.createElement('a');
             linkElement.setAttribute('target','_blank');
-            linkElement.setAttribute('href',repo.html_url);
             linkElement.appendChild(document.createTextNode('Acessar'));
 
             let listItemElement = document.createElement('li');
