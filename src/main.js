@@ -13,6 +13,17 @@ class App {
         this.formElement.onsubmit = event => this.addRepository(event); 
     }
 
+    setLoading(loading = true){
+        if(loading === true){
+            let loadingElement = document.createElement('span');
+            loadingElement.appendChild(document.createTextNode('Carregando'));
+            loadingElement.setAttribute('id','loading');
+            this.formElement.appendChild(loadingElement);
+        }else{
+            document.getElementById('loading').remove();
+        }
+    }
+
     async addRepository(event){
         event.preventDefault();
 
@@ -21,25 +32,30 @@ class App {
         if(repoInput.length === 0)
             return;
 
+        this.setLoading();
+
         try{
             const response = await api.get(`/repos/${repoInput}`);
+            
+            //Utilizando desestruturação para obter valores de retorno
+            const { name, description, html_url, owner: {avatar_url}} = response.data;
+            
+            //Mais uma melhoria com short syntax por não precisar utilizar a sintax name: name, pois são iguais
+            this.repositories.push({
+                name,
+                description,
+                avatar_url,
+                html_url
+            });
+
+            this.inputElement.value = '';
+
+            this.render();
         }catch (err){
             console.warn('Erro na API');
         }
-        //Utilizando desestruturação para obter valores de retorno
-        const { name, description, html_url, owner: {avatar_url}} = response.data;
-        
-        //Mais uma melhoria por não precisar utilizar a sintax name: name, pois são iguais
-        this.repositories.push({
-            name,
-            description,
-            avatar_url,
-            html_url
-        });
 
-        this.inputElement.value = '';
-
-        this.render();
+        this.setLoading(false);
     }
 
     render(){
